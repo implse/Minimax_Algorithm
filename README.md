@@ -1,5 +1,5 @@
 # Minimax Algorithm
 
 <p align="center">
-  <img width="480" height="360" src="images\Minimax.png">
+  <img width="800" height="600" src="images\minimax.png">
 </p>
