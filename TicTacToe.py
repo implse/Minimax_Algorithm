@@ -4,22 +4,20 @@ import copy
 
 # Return starting state of the board
 def initial_state():
-
-    return [[EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY],
-            [EMPTY, EMPTY, EMPTY]]
+    return [[None, None, None],
+            [None, None, None],
+            [None, None, None]]
 
 # Return player who has the next turn on a board
 def player(board):
     next_turn = 0
     for row in board:
-        next_turn += row.count(X)
-        next_turn -= row.count(O)
-    return X if next_turn <= 0 else O
+        next_turn += row.count("X")
+        next_turn -= row.count("O")
+    return "X" if next_turn <= 0 else "O"
 
 # Return (i, j) from number 1 - 9
 def position(move):
-
     i = int((move - 1) /3)
     j = int((move - 1) % 3)
     return (i, j)
@@ -29,7 +27,7 @@ def actions(board):
     available_positions = set()
     for row in range(len(board)):
         for col in range(len(board[0])):
-            if board[row][col] == EMPTY:
+            if board[row][col] == None:
                 available_positions.add((row, col))
     return available_positions
 
@@ -43,43 +41,43 @@ def result(board, action):
 # Return the winner of the game, if there is one
 def winner(board):
     if utility(board) == 1:
-        return X
+        return "X"
     if utility(board) == -1:
-        return O
+        return "O"
     return None
 
 # Returns True if game is over, False otherwise
 def terminal(board):
-    if len(actions(board)) == 0 or winner(board) == X or winner(board) == O:
+    if len(actions(board)) == 0 or winner(board) == "X" or winner(board) == "O":
         return True
     return False
 
-# Return 1 if X has won the game, -1 if O has won, 0 otherwise
+# Return 1 if "X" has won the game, -1 if "O" has won, 0 otherwise
 def utility(board):
     # Check each row for a winner
     for row in board:
-        if row.count(X) == 3:
+        if row.count("X") == 3:
             return 1
-        if row.count(O) == 3:
+        if row.count("O") == 3:
             return -1
 
     # Check vertically for a winner
     for i in range(3):
-        if board[0][i] == X and board[1][i] == X and board[2][i] == X:
+        if board[0][i] == "X" and board[1][i] == "X" and board[2][i] == "X":
             return 1
-        if board[0][i] == O and board[1][i] == O and board[2][i] == O:
+        if board[0][i] == "O" and board[1][i] == "O" and board[2][i] == "O":
             return -1
 
     # Check for a winner Diagonally from bottom left to top right
-    if board[2][0] == X and board[1][1] == X and board[0][2] == X:
+    if board[2][0] == "X" and board[1][1] == "X" and board[0][2] == "X":
         return 1
-    if board[2][0] == O and board[1][1] == O and board[0][2] == O:
+    if board[2][0] == "O" and board[1][1] == "O" and board[0][2] == "O":
         return -1
 
     # Check for a winner Diagonally from top left to bottom right
-    if board[0][0] == X and board[1][1] == X and board[2][2] == X:
+    if board[0][0] == "X" and board[1][1] == "X" and board[2][2] == "X":
         return 1
-    if board[0][0] == O and board[1][1] == O and board[2][2] == O:
+    if board[0][0] == "O" and board[1][1] == "O" and board[2][2] == "O":
         return -1
 
     # tie or no winner return 0
@@ -93,7 +91,7 @@ def print_board(board):
     i = 1
     for row in range(ln):
         for col in range(ln):
-            if board[row][col] == EMPTY:
+            if board[row][col] == None:
                 display_board[row][col] = str(i)
             i += 1
 
@@ -137,7 +135,7 @@ def minimax(board):
     current_player = player(board)
 
     # Maximizing
-    if current_player == X:
+    if current_player == "X":
         v = float("-inf")
         for action in actions(board):
             k = minimizing(result(board, action))
@@ -156,17 +154,13 @@ def minimax(board):
 
 
 # Game Start Here
-X = "X"
-O = "O"
-EMPTY = None
-
 board = initial_state()
 
 print("\n")
-print("Enter the game of Tic-Tac-Toe")
+print("Enter the game of Minimax Tic-Tac-Toe")
 print("\n")
-print("You will play against minimax algorithm")
-
+print("You're going to play against minimax algorithm.")
+print(("\n"))
 print("Your are player X and computer is O.")
 print("\n")
 
@@ -193,9 +187,11 @@ while True:
     if player(board) == player_id:
         print_board(board)
         print("\n")
-        player_move = input("Your Turn, choose you move? :  ")
+        player_move = int(input("Your turn, choose you move? :  "))
+        while player_move not in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
+            player_move = int(input("Your turn, choose you move? :  "))
         print("\n")
-        move = position(int(player_move))
+        move = position(player_move)
         board = result(board, move)
         print_board(board)
         print("\n")
