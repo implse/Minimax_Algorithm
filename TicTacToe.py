@@ -22,6 +22,11 @@ def position(move):
     j = int((move - 1) % 3)
     return (i, j)
 
+# Return 1 - 9 from number (i, j)
+def number(move):
+    positions = [(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
+    return positions.index(move) + 1
+
 # Return (i, j) from number 1 - 9
 def actions(board):
     available_positions = set()
@@ -186,9 +191,11 @@ while True:
     # Player turn
     if player(board) == player_id:
         print_board(board)
+        available_moves = sorted(list(number(move) for move in actions(board)))
         print("\n")
+        print("Available moves : ",  available_moves)
         player_move = int(input("Your turn, choose you move? :  "))
-        while player_move not in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
+        while player_move not in available_moves:
             player_move = int(input("Your turn, choose you move? :  "))
         print("\n")
         move = position(player_move)
